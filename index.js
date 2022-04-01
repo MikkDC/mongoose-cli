@@ -10,7 +10,8 @@ const Game = require("./game/gameModel");
     mongoose.connect(process.env.MONGO_URI);
         
     try{
-        
+        // ADDing an entry --add --title "" --developer "" --publisher "" --year ""
+        // note: --title is REQUIRED to be able to add an entry
         if (argv.add) {
             const game = new Game(
                 {title: argv.title,
@@ -20,9 +21,10 @@ const Game = require("./game/gameModel");
                    )
             await game.save();
             console.log(game);
-            
-                } else if (argv.listBy) {
 
+                // listBy lists entries by category
+                // eg, --listBy --year"2018" will list all games from 2018
+                } else if (argv.listBy) {
                     if (argv.title) {
                         const listResult = await Game.find(
                             { title: argv.title }
@@ -52,9 +54,41 @@ const Game = require("./game/gameModel");
                         console.log(listResult);
                     }
                     mongoose.connection.close();
-                    
-                } else if (argv.update) {
 
+                // update lets the user update an entry but only one category at a time
+                // eg, --update --title "" --newtitle "" updates title
+                // eg2, --update --title "" --newyear "" updates year of that title
+                } else if (argv.update) {
+                    if (argv.newtitle) {
+                        await Game.updateOne(
+                            { title: argv.title },
+                            { $set: { title: argv.newtitle } }
+                        )
+                        console.log(`Game title updated to ${argv.newtitle}`)
+                    }                    
+                    else if (argv.newdeveloper) {
+                        await Game.updateOne(
+                            { title: argv.title },
+                            { $set: { developer: argv.newdeveloper } }
+                        )
+                        console.log(`Developer updated to ${argv.newdeveloper}`)
+                    }
+                    else if (argv.newpublisher) {
+                        await Game.updateOne(
+                            { title: argv.title },
+                            { $set: { publisher: argv.newpublisher } }
+                        )
+                        console.log(`Publisher updated to ${argv.newpublisher }`)
+                    }
+                    else if (argv.newyear) {
+                        await Game.updateOne(
+                            { title: argv.title },
+                            { $set: { year: argv.newyear } }
+                        )
+                        console.log(`Year updated for ${argv.title} to (${argv.newyear})`)
+                    }                
+                // Deletes one entry from the data base 
+                // Usage: --delete --title ""
                 } else if (argv.delete) {
                     await Game.deleteOne(
                         { title: argv.title })
