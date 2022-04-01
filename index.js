@@ -62,10 +62,9 @@ const argv = yargs(hideBin(process.argv)).argv;
 
                 } else if (argv.delete) {
                     await Game.deleteOne(
-                        { title: argv.title }
-                        )
-                        console.log(`Game "${argv.title}" deleted`) 
-                        
+                        { title: argv.title })
+                        console.log(`Game ${argv.title} deleted`) 
+                                            
                 } else {
                     console.log("Command not recognised");
                 }
