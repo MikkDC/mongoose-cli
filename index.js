@@ -4,17 +4,11 @@ const mongoose = require("mongoose");
 const yargs = require("yargs");
 const { hideBin } = require("yargs/helpers");
 const argv = yargs(hideBin(process.argv)).argv;
+const Game = require("./game/gameModel");
 
 (async () => {
     mongoose.connect(process.env.MONGO_URI);
-
-    const Game = mongoose.model("Game", {
-        title: {type: String, unique: true, required: true },
-        developer: {type: String, unique: false, default: "Unknown" },
-        publisher: {type: String, unique: false, default: "Unknown" },
-        year: {type: Number, default: "????" }
-     });
-     
+        
     try{
         
         if (argv.add) {
@@ -57,7 +51,8 @@ const argv = yargs(hideBin(process.argv)).argv;
                         const listResult = await Game.find()
                         console.log(listResult);
                     }
-
+                    mongoose.connection.close();
+                    
                 } else if (argv.update) {
 
                 } else if (argv.delete) {
