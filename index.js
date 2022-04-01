@@ -30,7 +30,36 @@ const argv = yargs(hideBin(process.argv)).argv;
                 } else if (argv.find) {
 
                 } else if (argv.listBy) {
-                    
+
+                    if (argv.title) {
+                        const listResult = await Game.find(
+                            { title: argv.title }
+                        )
+                        console.log(listResult)
+                    }
+                    else if (argv.developer) {
+                        const listResult = await Game.find(
+                            { developer: argv.developer }
+                        )
+                        console.log(listResult)
+                    }
+                    else if (argv.publisher) {
+                        const listResult = await Game.find(
+                            { publisher: argv.publisher }
+                        )
+                        console.log(listResult)
+                    }
+                    else if (argv.year) {
+                        const listResult = await Game.find(
+                            { year: argv.year }
+                        )
+                        console.log(listResult);
+                    }
+                    else {
+                        const listResult = await Game.find()
+                        console.log(listResult);
+                    }
+
                 } else if (argv.update) {
 
                 } else if (argv.delete) {
@@ -42,6 +71,7 @@ const argv = yargs(hideBin(process.argv)).argv;
     } catch (error) {
         console.log(error);        
     }
+    
     // closes connection to database and returns control to user
     mongoose.connection.close();
 
