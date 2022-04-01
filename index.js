@@ -27,8 +27,6 @@ const argv = yargs(hideBin(process.argv)).argv;
             await game.save();
             console.log(game);
             
-                } else if (argv.find) {
-
                 } else if (argv.listBy) {
 
                     if (argv.title) {
@@ -63,7 +61,11 @@ const argv = yargs(hideBin(process.argv)).argv;
                 } else if (argv.update) {
 
                 } else if (argv.delete) {
-
+                    await Game.deleteOne(
+                        { title: argv.title }
+                        )
+                        console.log(`Game "${argv.title}" deleted`) 
+                        
                 } else {
                     console.log("Command not recognised");
                 }
